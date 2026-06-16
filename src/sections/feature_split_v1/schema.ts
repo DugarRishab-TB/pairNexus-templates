@@ -13,7 +13,10 @@ export const featureSplitV1Schema = z.object({
     bullets: z.object({
       type: z.literal('faq'),
       data: z.object({
-        items: z.array(faqItemSchema).min(1).max(3),
+        // Loosened from .max(3) to .max(6) so this template can also model
+        // "feature cards" rows in split sections (e.g. Section 8 of the
+        // Home-03 design has 4 left-side cards). See docs/home-03-parity-gap.md.
+        items: z.array(faqItemSchema).min(1).max(6),
       }),
     }),
     mockupImage: z.object({ type: z.literal('image'), data: imageDataSchema }),

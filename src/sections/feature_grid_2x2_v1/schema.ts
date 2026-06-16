@@ -13,7 +13,11 @@ export const featureGrid2x2V1Schema = z.object({
   slots: z.object({
     eyebrow: z.object({ type: z.literal('text'), data: textDataSchema }),
     headline: z.object({ type: z.literal('text'), data: textDataSchema }),
-    cards: z.array(gridCardSchema).length(4),
+    // Loosened from .length(4) to a 2–6 range so the same template can model
+    // 3-up stat rows (e.g. Section 6 of Home-03) and 6-up icon grids without
+    // requiring a second templateKey. The admin seed still defaults to 4.
+    // See docs/home-03-parity-gap.md §3.2 / §12.2.
+    cards: z.array(gridCardSchema).min(2).max(6),
   }),
 })
 
