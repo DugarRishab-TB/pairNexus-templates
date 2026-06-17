@@ -1,10 +1,15 @@
 import { z } from 'zod'
 import { textDataSchema } from '../../slots/text.js'
-import { faqItemSchema } from '../../slots/faq.js'
+import { commonItemFields } from '../_common/common-item.js'
 
-// Standalone FAQ accordion. Reuses the existing faqItemSchema ({q, a})
-// and the faq-slot shape. The renderer is a 'use client' component
-// that toggles aria-expanded. See docs/home-03-parity-gap.md §9.1.
+// Standalone FAQ accordion. Each item is the common modal-driven shape
+// (icon + heading + description); no section-specific extras. The icon
+// is optional in the schema because FAQ items historically didn't have
+// one, but the new Add-Item modal requires it (the migration adds a
+// placeholder icon when transforming old data). See
+// docs/home-03-parity-gap.md §9.1.
+
+const faqItemSchema = commonItemFields.extend({})
 
 export const faqV1Schema = z.object({
   templateKey: z.literal('faq_v1'),

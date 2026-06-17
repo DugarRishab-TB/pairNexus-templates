@@ -1,16 +1,19 @@
 import { z } from 'zod'
 import { textDataSchema } from '../../slots/text.js'
-import { imageDataSchema } from '../../slots/image.js'
 import { ctaDataSchema } from '../../slots/cta.js'
+import { commonItemFields } from '../_common/common-item.js'
 
-export const tabItemSchema = z.object({
-  label: z.string().min(1).max(50),
-  title: z.string().min(1).max(200),
-  body: z.string().min(1).max(2000),
-  bullets: z.array(z.string().min(1).max(200)).min(0).max(10),
-  diagram: imageDataSchema,
-  cta: ctaDataSchema,
+// Client-side tabs. Each tab is the common modal-driven shape (icon +
+// heading + description) plus optional `label`, `bullets`, and `cta`
+// extras. Old shape: { label, title, body, bullets, diagram, cta }.
+// New shape: { icon, heading, description, label?, bullets?, cta? }.
+
+const tabItemSchema = commonItemFields.extend({
+  label: z.string().max(50).optional(),
+  bullets: z.array(z.string().min(1).max(200)).min(0).max(10).optional(),
+  cta: ctaDataSchema.optional(),
 })
+export { tabItemSchema }
 
 export const tabbedFeaturesV1Schema = z.object({
   templateKey: z.literal('tabbed_features_v1'),

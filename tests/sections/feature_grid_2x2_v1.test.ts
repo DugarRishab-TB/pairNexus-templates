@@ -1,13 +1,10 @@
 import { describe, it, expect } from 'vitest'
 import { featureGrid2x2V1Schema } from '../../src/sections/feature_grid_2x2_v1/schema.js'
+import { lucideItem } from '../_helpers/common-item.js'
 
 describe('featureGrid2x2V1Schema', () => {
   it('accepts exactly 4 cards', () => {
-    const cards = Array.from({ length: 4 }, (_, i) => ({
-      title: `Card ${i}`,
-      body: `Body ${i}`,
-      decoration: { name: 'shield' as const },
-    }))
+    const cards = Array.from({ length: 4 }, () => lucideItem('shield'))
     const result = featureGrid2x2V1Schema.parse({
       templateKey: 'feature_grid_2x2_v1',
       slots: {
@@ -19,12 +16,8 @@ describe('featureGrid2x2V1Schema', () => {
     expect(result.slots.cards).toHaveLength(4)
   })
 
-  it('rejects more than 4 cards', () => {
-    const cards = Array.from({ length: 5 }, (_, i) => ({
-      title: `Card ${i}`,
-      body: `Body ${i}`,
-      decoration: { name: 'shield' as const },
-    }))
+  it('rejects more than 6 cards', () => {
+    const cards = Array.from({ length: 7 }, () => lucideItem('shield'))
     expect(() =>
       featureGrid2x2V1Schema.parse({
         templateKey: 'feature_grid_2x2_v1',
@@ -37,12 +30,8 @@ describe('featureGrid2x2V1Schema', () => {
     ).toThrow()
   })
 
-  it('rejects fewer than 4 cards', () => {
-    const cards = Array.from({ length: 3 }, (_, i) => ({
-      title: `Card ${i}`,
-      body: `Body ${i}`,
-      decoration: { name: 'shield' as const },
-    }))
+  it('rejects fewer than 2 cards', () => {
+    const cards = [lucideItem('shield')]
     expect(() =>
       featureGrid2x2V1Schema.parse({
         templateKey: 'feature_grid_2x2_v1',

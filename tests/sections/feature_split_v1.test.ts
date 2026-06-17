@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { featureSplitV1Schema } from '../../src/sections/feature_split_v1/schema.js'
+import { commonItem } from '../_helpers/common-item.js'
 
 describe('featureSplitV1Schema', () => {
   it('accepts a feature split section', () => {
@@ -12,16 +13,17 @@ describe('featureSplitV1Schema', () => {
           type: 'card',
           data: {
             title: 'Workflow that Create Workflows Intelligently',
-            body: 'Manual processes consume valuable time...',
+            body: 'Manual processes consume valuable time…',
           },
         },
         bullets: {
           type: 'faq',
           data: {
+            // New common modal-driven shape; old `q`/`a` are gone.
             items: [
-              { q: 'Manual Data Entry', a: 'Consumes valuable clinical time.' },
-              { q: 'Errors', a: 'Lead to revenue leakage.' },
-              { q: 'Fragmented Systems', a: 'Disrupt continuity.' },
+              commonItem({ heading: 'Manual Data Entry', description: { type: 'richtext', data: { html: '<p>Consumes valuable clinical time.</p>' } } }),
+              commonItem({ heading: 'Errors', description: { type: 'richtext', data: { html: '<p>Lead to revenue leakage.</p>' } } }),
+              commonItem({ heading: 'Fragmented Systems', description: { type: 'richtext', data: { html: '<p>Disrupt continuity.</p>' } } }),
             ],
           },
         },
@@ -34,8 +36,8 @@ describe('featureSplitV1Schema', () => {
     expect(result.templateKey).toBe('feature_split_v1')
   })
 
-  it('rejects more than 3 bullets', () => {
-    const items = Array.from({ length: 4 }, (_, i) => ({ q: `Q${i}`, a: `A${i}` }))
+  it('rejects more than 6 bullets', () => {
+    const items = Array.from({ length: 7 }, () => commonItem())
     expect(() =>
       featureSplitV1Schema.parse({
         templateKey: 'feature_split_v1',

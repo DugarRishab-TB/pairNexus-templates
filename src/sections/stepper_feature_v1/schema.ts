@@ -1,14 +1,16 @@
 import { z } from 'zod'
 import { textDataSchema } from '../../slots/text.js'
-import { imageDataSchema } from '../../slots/image.js'
 import { ctaDataSchema } from '../../slots/cta.js'
+import { commonItemFields } from '../_common/common-item.js'
 
-export const stepItemSchema = z.object({
-  title: z.string().min(1).max(100),
-  subtitle: z.string().min(1).max(200),
-  image: imageDataSchema,
-  body: z.string().min(1).max(2000),
-  cta: ctaDataSchema,
+// Numbered steps walking through a process. Each step is the common
+// modal-driven shape (icon + heading + description) plus optional
+// `subtitle` and `cta` extras. Old shape: { title, subtitle, image,
+// body, cta }. New shape: { icon, heading, description, subtitle?, cta? }.
+
+const stepItemSchema = commonItemFields.extend({
+  subtitle: z.string().max(200).optional(),
+  cta: ctaDataSchema.optional(),
 })
 
 export const stepperFeatureV1Schema = z.object({

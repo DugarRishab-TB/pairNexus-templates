@@ -15,6 +15,7 @@ import * as testimonialsV1 from './sections/testimonials_v1/index.js'
 import * as faqV1 from './sections/faq_v1/index.js'
 import * as blogGridV1 from './sections/blog_grid_v1/index.js'
 import * as footerV1 from './sections/footer_v1/index.js'
+import * as homeEditDocV1 from './sections/homeedit_doc_v1/index.js'
 
 export interface SectionDefinition {
   templateKey: string
@@ -120,6 +121,12 @@ export const sectionRegistry: Record<string, SectionDefinition> = {
     defaultVariant: footerV1.defaultVariant,
     variants: footerV1.variants,
   },
+  [homeEditDocV1.templateKey]: {
+    templateKey: homeEditDocV1.templateKey,
+    schema: homeEditDocV1.homeEditDocV1Schema,
+    defaultVariant: homeEditDocV1.defaultVariant,
+    variants: homeEditDocV1.variants,
+  },
 }
 
 export const TEMPLATE_KEYS = Object.keys(sectionRegistry) as TemplateKey[]
@@ -155,6 +162,7 @@ export const anySectionSchema = z.discriminatedUnion('templateKey', [
   faqV1.faqV1Schema,
   blogGridV1.blogGridV1Schema,
   footerV1.footerV1Schema,
+  homeEditDocV1.homeEditDocV1Schema,
 ])
 
 export type AnySection = z.infer<typeof anySectionSchema>

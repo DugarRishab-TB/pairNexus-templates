@@ -1,17 +1,16 @@
 import { z } from 'zod'
 import { textDataSchema } from '../../slots/text.js'
-import { imageDataSchema } from '../../slots/image.js'
 import { videoDataSchema } from '../../slots/video.js'
+import { commonItemFields } from '../_common/common-item.js'
 
-// 3 testimonial cards with an optional central video play button. The
-// testimonial shape (quote, name, role, avatar) matches the existing
-// testimonial slot. See docs/home-03-parity-gap.md §9.1.
+// 3 testimonial cards with an optional central video play button. Each
+// item is the common modal-driven shape (icon + heading + description)
+// plus an optional `role` extra. Old shape: { quote, name, role, avatar }.
+// New shape: { icon, heading, description, role? }. See
+// docs/home-03-parity-gap.md §9.1.
 
-const testimonialItemSchema = z.object({
-  quote: z.string().min(1).max(1000),
-  name: z.string().min(1).max(100),
-  role: z.string().min(1).max(100),
-  avatar: imageDataSchema.optional(),
+const testimonialItemSchema = commonItemFields.extend({
+  role: z.string().max(100).optional(),
 })
 
 export const testimonialsV1Schema = z.object({

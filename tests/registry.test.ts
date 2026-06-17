@@ -7,18 +7,25 @@ import {
 } from '../src/registry.js'
 
 describe('sectionRegistry', () => {
-  it('contains all 9 v1 templates', () => {
-    expect(TEMPLATE_KEYS).toHaveLength(9)
+  it('contains all 16 v1 templates', () => {
+    expect(TEMPLATE_KEYS).toHaveLength(16)
     expect(TEMPLATE_KEYS).toEqual(
       expect.arrayContaining([
         'nav_v1',
         'hero_centered_v1',
+        'hero_search_v1',
         'trust_logos_v1',
         'feature_split_v1',
         'stepper_feature_v1',
         'feature_grid_2x2_v1',
         'feature_alternating_v1',
         'tabbed_features_v1',
+        'voice_ai_cards_v1',
+        'stats_with_video_v1',
+        'security_illustration_v1',
+        'testimonials_v1',
+        'faq_v1',
+        'blog_grid_v1',
         'footer_v1',
       ])
     )

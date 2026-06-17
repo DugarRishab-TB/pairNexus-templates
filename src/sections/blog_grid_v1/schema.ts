@@ -1,19 +1,19 @@
 import { z } from 'zod'
 import { textDataSchema } from '../../slots/text.js'
-import { imageDataSchema } from '../../slots/image.js'
+import { commonItemFields } from '../_common/common-item.js'
 
-// 3 blog/news cards. Each post has image + category + title + excerpt +
-// author + date. date is a free-text slot (not a Date type) so editors
-// can put "Yesterday", "March 5", or an ISO string without coercion.
-// See docs/home-03-parity-gap.md §9.1.
+// 3 blog/news cards. Each post is the common modal-driven shape (icon
+// + heading + description) plus optional `category`, `author`, and
+// `date` extras. Old shape: { image, category, title, excerpt, author,
+// date }. New shape: { icon, heading, description, category?, author?, date? }.
+// The migration embeds `author` and `date` as a meta line in the
+// description so the public render doesn't lose them. See
+// docs/home-03-parity-gap.md §9.1.
 
-const blogPostSchema = z.object({
-  image: imageDataSchema,
-  category: z.string().min(1).max(50),
-  title: z.string().min(1).max(200),
-  excerpt: z.string().min(1).max(500),
-  author: z.string().min(1).max(100),
-  date: z.object({ type: z.literal('text'), data: textDataSchema }),
+const blogPostSchema = commonItemFields.extend({
+  category: z.string().max(50).optional(),
+  author: z.string().max(100).optional(),
+  date: z.object({ type: z.literal('text'), data: textDataSchema }).optional(),
 })
 
 export const blogGridV1Schema = z.object({

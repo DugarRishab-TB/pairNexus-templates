@@ -1,22 +1,27 @@
 import { describe, it, expect } from 'vitest'
 import { tabbedFeaturesV1Schema } from '../../src/sections/tabbed_features_v1/schema.js'
+import { commonItem } from '../_helpers/common-item.js'
 
 describe('tabbedFeaturesV1Schema', () => {
   it('accepts 5 tabs', () => {
-    const tabs = [
+    const labels = [
       'Interoperability',
       'Analytics',
       'Care Co-ordination',
       'Security & Compliance',
       'Referral & Handoffs',
-    ].map((label) => ({
-      label,
-      title: `${label} title`,
-      body: `${label} body`,
-      bullets: ['A', 'B', 'C'],
-      diagram: { publicId: `diagram-${label}`, alt: `${label} diagram` },
-      cta: { label: 'Book Demo', href: '/contact', variant: 'primary' as const },
-    }))
+    ]
+    const tabs = labels.map((label) =>
+      commonItem({
+        heading: `${label} title`,
+        description: { type: 'richtext', data: { html: `<p>${label} body</p>` } },
+        extras: {
+          label,
+          bullets: ['A', 'B', 'C'],
+          cta: { label: 'Book Demo', href: '/contact', variant: 'primary' as const },
+        },
+      }),
+    )
     const result = tabbedFeaturesV1Schema.parse({
       templateKey: 'tabbed_features_v1',
       slots: {
@@ -29,14 +34,15 @@ describe('tabbedFeaturesV1Schema', () => {
   })
 
   it('rejects more than 6 tabs', () => {
-    const tabs = Array.from({ length: 7 }, (_, i) => ({
-      label: `T${i}`,
-      title: 't',
-      body: 'b',
-      bullets: ['A'],
-      diagram: { publicId: 'x', alt: 'x' },
-      cta: { label: 'CTA', href: '/x', variant: 'primary' as const },
-    }))
+    const tabs = Array.from({ length: 7 }, () =>
+      commonItem({
+        extras: {
+          label: 'T',
+          bullets: ['A'],
+          cta: { label: 'CTA', href: '/x', variant: 'primary' as const },
+        },
+      }),
+    )
     expect(() =>
       tabbedFeaturesV1Schema.parse({
         templateKey: 'tabbed_features_v1',

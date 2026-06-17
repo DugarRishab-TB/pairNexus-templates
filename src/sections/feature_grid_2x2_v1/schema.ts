@@ -1,12 +1,14 @@
 import { z } from 'zod'
 import { textDataSchema } from '../../slots/text.js'
-import { iconDataSchema } from '../../slots/icon.js'
+import { commonItemFields } from '../_common/common-item.js'
 
-export const gridCardSchema = z.object({
-  title: z.string().min(1).max(200),
-  body: z.string().min(1).max(2000),
-  decoration: iconDataSchema,
-})
+// 2–6 card grid. Each card is the common modal-driven shape (icon +
+// heading + description). The old `decoration` (lucide icon) becomes
+// the new `icon` — the modal lets the editor pick image OR lucide.
+// No section-specific extras.
+
+const gridCardSchema = commonItemFields.extend({})
+export { gridCardSchema }
 
 export const featureGrid2x2V1Schema = z.object({
   templateKey: z.literal('feature_grid_2x2_v1'),
